@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+{% block nav%}
+    <div class="navbar-collapse collapse offset-md-6" id="navbarDefault">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{{ url_for('tellers') }}">Manage</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('payments') }}">Bookings</a>
+          </li>
+
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ url_for('extras') }}">Apps</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="{{ url_for('help') }}">Help</a>
+          </li>
+            <li class="nav-item">
+                <a class="nav-link " href="{{ url_for('logout') }}" style="color:red;">Logout</a>
+          </li>
+        </ul>
+      </div>
+{% endblock %}
+{% block status%}
+  <section class="intro-single">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-lg-8">
+          <div class="title-single-box">
+                <h5 style="font-size:15px;">Apps</span> </h5>
+            <span class="color-text-a"></span>
+          </div>
+        </div>
+          <div class="col-md-12 col-lg-4">
+          </div>
+      </div>
+    </div>
+  </section>
+{% endblock status %}
+{% block content %}
+<!--    desktop application link -->
+{% if branch %}
+    <div class="mt-2 h6 text-muted row col-12">{{ branch.name }}</div>
+    <div class="mt-2 h6 text-muted row col-12"> <span class="badge badge-success text-uppercase">System Activated</span></div>
+{% else %}
+   <div class="mt-2 alert alert-primary col-md-5 ">Application Not Activated.</div>
+{% endif %}
+    <form action="" method="POST" class="mt-5 mb-5">
+        <p class="text-muted mt-3  bold mt-2 mb-4 font-weight-bold h5 mb-4"><u>Change branch key</u></p>
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.key.label(class='form-control-label')}}
+            {% if form.key.errors %}
+            {{ form.key(class="form-control form-control-sm is-invalid col-lg-7")}}
+            <div class="invalid-feedback">
+                {% for error in form.key.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ form.key(class="form-control form-control-sm col-lg-7")}}
+            {% endif %}
+        </div>
+        <div class="form-group mt-3">
+            {{ form.submit(class="btn btn-sm btn-success btn-block mt-4 col-lg-3")}}
+        </div>
+    </form>
+
+    <form action="" name="phrase" id="phrase" class="mb-5">
+                <h5 class="text-muted  font-weight-bold h5 mb-4"><u>Customize Voice over phrase</u></h5>
+        <small class="font-weight-bold h6 mb-4 text-primary"><b>Currently Active : "</b>TICKET NUMBER XXX, {{ phrase
+        .upper() }} XX" </small><br>
+
+        <br>
+        <small class="font-weight-bold h6 mb-4"><b>Text Required : </b><mark class="text-black-50">PROCEED TO ... | GO TO .
+            .</mark></small><br><br>
+        <div id="message_icon"></div>
+        <label for="icon_name">Phrase</label>
+        <input type="text" id="new_phrase" name ="phrase" class="form-control form-control-sm col-lg-7">
+
+       <div class="mt-4 col-lg-7 row">
+           <label for="">Call option</label>
+            <select class="custom-select custom-select-sm" id="options_">
+          <option value="1" >Call by Service Name</option>
+          <option value="2" selected>Call by Counter Number</option>
+        </select>
+       </div>
+
+        <div class="btn btn-primary btn-sm col-lg-3 modalInfo mt-4" id="upload_icon_" onclick="phrase_()">Change Phrase</div>
+    </form>
+        <h5 class="text-muted font-weight-bold h5 mb-4"><u>Download Applications.</u></h5>
+        <div class="row">
+            <div class="row col-lg-12 mt-2">
+                <div class="col-lg-4">
+                <div class="icon mt-2">
+                </div>
+                <div class="mt-2">Download desktop and the mobile application from the link below. The latest of the available apps will be provided below.</div>
+                <div>
+                <div id="status_message"></div>
+
+                <div class="row ml-1">
+                    <div class="btn-group mt-4" role="group">
+                    <select  class="form-control form-control-sm mr-3" id="application">
+                    <option class="dropdown-item btn-sm " id="1001" value="Teller">Desktop Teller App</option>
+                    <option class="dropdown-item btn-sm " id="1002" value="Display">Desktop Display App</option>
+                    <option class="dropdown-item btn-sm " id="1003" value="Book">Desktop Book  App</option>
+                    <option class="dropdown-item btn-sm " id="1004" value="Android">Mobile App </option>
+                    </select>
+                </div>
+
+                <div class="btn-group mt-4" role="group">
+                      <select class="form-control form-control-sm" id="platform">
+                        <option class="dropdown-item btn-sm " id="2001" value="Windows">Windows x64</option>
+                        <option class="dropdown-item btn-sm " id="2002" value="Mac">Mac x64</option>
+                        <option class="dropdown-item btn-sm " id="2003" value="Linux">Linux</option>
+                      </select>
+                </div>
+                </div>
+              <br><br>
+              <button target="_blank" class="btn btn-primary btn-sm col-lg-6" id="download_apps">Download</button>
+              </div>
+            </div>
+        </div>
+
+    <h5 class="text-muted mt-2 mb-3 ml-3 mt-5 font-weight-bold h5 mb-4 h5"><u>Manage Users.</u></h5><br>
+    <div class="row  col-lg-12 mt-1 mt-1">
+        <div class="col-lg-4">
+                <div>Add and manage user information. These users will be able to login to the backend.</div>
+                    <div>
+                     <a href="{{url_for('add_users')}}"><button class="btn-sm btn-primary btn col-lg-6 mt-3">Manage Users</button></a>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+    <form action="" name="phrase" id="phrase" class="mb-5">
+        <p class="text-muted mt-3  bold mt-2 font-weight-bold h5 mb-2 mt-5"><u>Reset Tickets</u></p>
+            <div>Customize tickets reset frequency. <mark>By default ticket reset occurs every midnight. Time is
+                based on the backend servers time.
+             </mark>.</div><br>
+          <div id="reset_message" class="col-lg-12 row"></div>
+
+          <div class="mt-2 col-lg-7 row mb-4">
+           <label for="">Ticket Reset Selection.</label>
+            <select class="custom-select custom-select-sm" id="options_reset" onchange="statusChange(this)">
+          <option value="1" selected>Tickets Should Reset</option>
+          <option value="2" >Tickets should not reset</option>
+        </select>
+       </div>
+      <div id="tickets_reset_div">
+        <label for="icon_name">Reset time</label>
+            <input type="text" id="reset_time" name ="reset_time" readonly class="form-control form-control-sm col-lg-2">
+        </div>
+        <div class="btn btn-primary btn-sm col-lg-3 modalInfo mt-4" id="upload_icon_" onclick="update_reset_settings()">Update Reset Settings</div>
+    </form>
+
+        </div> <!-- END DIV-->
+    <br><br><br><br>
+        <script src="{{ url_for('static',filename='js/upload.js') }}"></script>
+
+{% endblock content  %}
