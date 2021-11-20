@@ -39,7 +39,7 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String(250), nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default="default.jpg")
+    image_file = db.Column(db.String(255), nullable=False, default="default.jpg")
     sold = db.Column(db.Boolean, nullable=False, default=False)
     description = db.Column(db.Text, nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.now)
