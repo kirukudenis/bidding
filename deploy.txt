@@ -1,2 +1,0 @@
-steps to deploy a flask project to a server
-... setting up the ssh keys : best practices
