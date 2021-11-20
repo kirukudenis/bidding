@@ -1,5 +1,5 @@
 # learn is the package
-from fuprox import app
+from bidding import app
 import eventlet
 import eventlet.wsgi
 
